@@ -12,7 +12,8 @@ class _HomeScreenState extends State<HomeScreen> {
   GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   List<Map<String, dynamic>> notes;
   List<Map<String, dynamic>> noteList;
-  final List<int> colorCode = [900, 700, 500, 300, 100];
+  int i = 0;
+  final List<int> colorCode = [900, 700, 500];
   TextEditingController editTitleController = TextEditingController();
   TextEditingController editNoteController = TextEditingController();
   TextEditingController editIDController = TextEditingController();
@@ -32,6 +33,22 @@ class _HomeScreenState extends State<HomeScreen> {
         ),
         body: SafeArea(
             child: Column(children: [
+          Padding(
+            // fromLTRB(right, bottom, left, top)
+            padding: const EdgeInsets.fromLTRB(12, 2, 12, 3),
+            child: TextField(
+              cursorColor: Colors.white,
+              decoration: InputDecoration(
+                  hintText: " Search...",
+                  // border: InputBorder.none,
+                  suffixIcon: IconButton(
+                    icon: Icon(Icons.search),
+                    color: Color.fromRGBO(93, 25, 72, 1),
+                    onPressed: () {},
+                  )),
+              style: TextStyle(color: Colors.black, fontSize: 15.0),
+            ),
+          ),
           Expanded(
             child: ListTileTheme(
               contentPadding: EdgeInsets.all(15),
@@ -48,7 +65,8 @@ class _HomeScreenState extends State<HomeScreen> {
                 itemBuilder: (_, index) => Card(
                   margin: EdgeInsets.all(10),
                   child: ListTile(
-                    tileColor: Colors.lightBlue[colorCode[index]],
+                    tileColor: Colors
+                        .lightBlue[colorCode[(index >= 3 ? colorCode.length-1 : index)]],
                     // title: Text(notes[index]['id']),
                     title: Text(notes[index]['title'] ?? '',
                         style:
@@ -185,4 +203,6 @@ class _HomeScreenState extends State<HomeScreen> {
       editNoteController.text = '';
     }
   }
+
+  search() async {}
 }
