@@ -17,7 +17,6 @@ class _HomeScreenState extends State<HomeScreen> {
   TextEditingController editNoteController = TextEditingController();
   TextEditingController editIDController = TextEditingController();
 
-
   @override
   void initState() {
     super.initState();
@@ -33,69 +32,67 @@ class _HomeScreenState extends State<HomeScreen> {
         ),
         body: SafeArea(
             child: Column(children: [
-              Expanded(
-                child: ListTileTheme(
-                  contentPadding: EdgeInsets.all(15),
-                  iconColor: Colors.white,
-                  textColor: Colors.black54,
-                  // tileColor: Colors.lightBlue[colorCode[index]],
-                  style: ListTileStyle.list,
-                  dense: true,
-                  child: ListView.builder(
-                    scrollDirection: Axis.vertical,
-                    shrinkWrap: true,
-                    physics: ScrollPhysics(),
-                    itemCount: notes?.length ?? 0,
-                    itemBuilder: (_, index) =>
-                        Card(
-                          margin: EdgeInsets.all(10),
-                          child: ListTile(
-                            tileColor: Colors.lightBlue[colorCode[index]],
-                            // title: Text(notes[index]['id']),
-                            title: Text(notes[index]['title'] ?? '',
-                                style: const TextStyle(color: Colors.white,
-                                    fontSize: 18)),
-                            subtitle: Text(notes[index]['note'] ?? '',
-                                style: const TextStyle(color: Colors.white,
-                                    fontSize: 15)),
+          Expanded(
+            child: ListTileTheme(
+              contentPadding: EdgeInsets.all(15),
+              iconColor: Colors.white,
+              textColor: Colors.black54,
+              // tileColor: Colors.lightBlue[colorCode[index]],
+              style: ListTileStyle.list,
+              dense: true,
+              child: ListView.builder(
+                scrollDirection: Axis.vertical,
+                shrinkWrap: true,
+                physics: ScrollPhysics(),
+                itemCount: notes?.length ?? 0,
+                itemBuilder: (_, index) => Card(
+                  margin: EdgeInsets.all(10),
+                  child: ListTile(
+                    tileColor: Colors.lightBlue[colorCode[index]],
+                    // title: Text(notes[index]['id']),
+                    title: Text(notes[index]['title'] ?? '',
+                        style:
+                            const TextStyle(color: Colors.white, fontSize: 18)),
+                    subtitle: Text(notes[index]['note'] ?? '',
+                        style:
+                            const TextStyle(color: Colors.white, fontSize: 15)),
 
-                            trailing: Row(
-                              mainAxisSize: MainAxisSize.min,
-                              children: [
-                                IconButton(
-                                    onPressed: () async {
-                                      setData(notes[index]['id'].toString(),
-                                          notes[index]['title'],
-                                          notes[index]['note']);
-                                      showForm(context);
-                                    },
-                                    icon: const Icon(Icons.edit)),
-                                IconButton(
-                                    onPressed: () async {
-                                      DatabaseHelper.instance
-                                          .delete(notes[index]['id']);
-                                      await refresh();
-                                    },
-                                    icon: const Icon(Icons.delete)),
-                              ],
-                            ),
-                          ),
-                        ),
+                    trailing: Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        IconButton(
+                            onPressed: () async {
+                              setData(notes[index]['id'].toString(),
+                                  notes[index]['title'], notes[index]['note']);
+                              showForm(context);
+                            },
+                            icon: const Icon(Icons.edit)),
+                        IconButton(
+                            onPressed: () async {
+                              DatabaseHelper.instance
+                                  .delete(notes[index]['id']);
+                              await refresh();
+                            },
+                            icon: const Icon(Icons.delete)),
+                      ],
+                    ),
                   ),
                 ),
               ),
-              Padding(
-                padding: const EdgeInsets.only(bottom: 10.0),
-                child: FloatingActionButton(
-                    onPressed: () {
-                      setData('', '', '');
-                      showForm(context);
-                    },
-                    child: const Icon(Icons.add),
-                    backgroundColor: Colors.blue,
-                  ),
-              )
-            ])));
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.only(bottom: 10.0),
+            child: FloatingActionButton(
+              onPressed: () {
+                setData('', '', '');
+                showForm(context);
+              },
+              child: const Icon(Icons.add),
+              backgroundColor: Colors.blue,
+            ),
+          )
+        ])));
     // );
   }
 
@@ -119,7 +116,7 @@ class _HomeScreenState extends State<HomeScreen> {
                         return value.isNotEmpty ? null : "Invalid Filed";
                       },
                       decoration:
-                      const InputDecoration(hintText: "Enter Title"),
+                          const InputDecoration(hintText: "Enter Title"),
                     ),
                     TextFormField(
                       controller: editNoteController,
@@ -128,7 +125,7 @@ class _HomeScreenState extends State<HomeScreen> {
                         return value.isNotEmpty ? null : "Invalid Filed";
                       },
                       decoration:
-                      const InputDecoration(hintText: "Enter Description"),
+                          const InputDecoration(hintText: "Enter Description"),
                     )
                   ],
                 ),
@@ -163,8 +160,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     },
                     child: Text("Cancel"))
               ]);
-        }).then((_) =>
-        setState(() {
+        }).then((_) => setState(() {
           getData();
         }));
   }
@@ -173,8 +169,8 @@ class _HomeScreenState extends State<HomeScreen> {
     notes = await DatabaseHelper.instance.getAllNotes();
   }
 
-  refresh() {
-    getData();
+  refresh() async {
+    await getData();
     setState(() {});
   }
 
