@@ -1,6 +1,5 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-
 import 'database_helper.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -12,11 +11,13 @@ class _HomeScreenState extends State<HomeScreen> {
   GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   List<Map<String, dynamic>> notes;
   List<Map<String, dynamic>> noteList;
+  List<Map<String, dynamic>> searchNotes;
   int i = 0;
   final List<int> colorCode = [900, 700, 500];
   TextEditingController editTitleController = TextEditingController();
   TextEditingController editNoteController = TextEditingController();
   TextEditingController editIDController = TextEditingController();
+  TextEditingController searchController = TextEditingController();
 
   @override
   void initState() {
@@ -37,6 +38,7 @@ class _HomeScreenState extends State<HomeScreen> {
             // fromLTRB(right, bottom, left, top)
             padding: const EdgeInsets.fromLTRB(12, 2, 12, 3),
             child: TextField(
+              controller: searchController,
               cursorColor: Colors.white,
               decoration: InputDecoration(
                   hintText: " Search...",
@@ -47,6 +49,10 @@ class _HomeScreenState extends State<HomeScreen> {
                     onPressed: () {},
                   )),
               style: TextStyle(color: Colors.black, fontSize: 15.0),
+              onChanged: (content) {
+                print(searchController.text);
+                search();
+              },
             ),
           ),
           Expanded(
@@ -61,17 +67,17 @@ class _HomeScreenState extends State<HomeScreen> {
                 scrollDirection: Axis.vertical,
                 shrinkWrap: true,
                 physics: ScrollPhysics(),
-                itemCount: notes?.length ?? 0,
+                itemCount:searchController.text.isNotEmpty?searchNotes?.length??0 : notes?.length ?? 0,
                 itemBuilder: (_, index) => Card(
                   margin: EdgeInsets.all(10),
                   child: ListTile(
-                    tileColor: Colors
-                        .lightBlue[colorCode[(index >= 3 ? colorCode.length-1 : index)]],
+                    tileColor: Colors.lightBlue[
+                        colorCode[(index >= 3 ? colorCode.length - 1 : index)]],
                     // title: Text(notes[index]['id']),
-                    title: Text(notes[index]['title'] ?? '',
+                    title: Text(searchController.text.isNotEmpty?searchNotes[index]['title'] ?? '': notes[index]['title'] ?? '',
                         style:
                             const TextStyle(color: Colors.white, fontSize: 18)),
-                    subtitle: Text(notes[index]['note'] ?? '',
+                    subtitle: Text(searchController.text.isNotEmpty?searchNotes[index]['note'] ?? '': notes[index]['note'] ?? '',
                         style:
                             const TextStyle(color: Colors.white, fontSize: 15)),
 
@@ -204,5 +210,13 @@ class _HomeScreenState extends State<HomeScreen> {
     }
   }
 
-  search() async {}
+   search() async {
+    setState(() {
+      var text = searchController.text.toLowerCase();
+      searchNotes = notes.where((element) {
+        var title =element['title'].toString().toLowerCase();
+        return title.contains(text);
+      }).toList();
+    });
+  }
 }
