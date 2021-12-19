@@ -38,6 +38,7 @@ class _HomeScreenState extends State<HomeScreen> {
             // fromLTRB(right, bottom, left, top)
             padding: const EdgeInsets.fromLTRB(12, 2, 12, 3),
             child: TextField(
+              autofocus: false,
               controller: searchController,
               cursorColor: Colors.white,
               decoration: InputDecoration(
@@ -64,6 +65,7 @@ class _HomeScreenState extends State<HomeScreen> {
               style: ListTileStyle.list,
               dense: true,
               child: ListView.builder(
+                keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
                 scrollDirection: Axis.vertical,
                 shrinkWrap: true,
                 physics: ScrollPhysics(),
@@ -135,6 +137,7 @@ class _HomeScreenState extends State<HomeScreen> {
                       child: TextFormField(controller: editIDController),
                     ),
                     TextFormField(
+                      autofocus: false,
                       controller: editTitleController,
                       validator: (value) {
                         return value.isNotEmpty ? null : "Invalid Filed";
@@ -143,6 +146,7 @@ class _HomeScreenState extends State<HomeScreen> {
                           const InputDecoration(hintText: "Enter Title"),
                     ),
                     TextFormField(
+                      autofocus: false,
                       controller: editNoteController,
                       maxLines: 6,
                       validator: (value) {
