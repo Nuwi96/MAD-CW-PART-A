@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:toast/toast.dart';
 import '../database_helper.dart';
-
 class HomeScreen extends StatefulWidget {
   @override
   _HomeScreenState createState() => _HomeScreenState();
@@ -97,6 +97,8 @@ class _HomeScreenState extends State<HomeScreen> {
                             onPressed: () async {
                               DatabaseHelper.instance
                                   .delete(notes[index]['id']);
+                              Toast.show("Deleted Successfully", context, duration: Toast.LENGTH_LONG, gravity:  Toast.BOTTOM,backgroundColor:Colors.red);
+
                               await refresh();
                             },
                             icon: const Icon(Icons.delete)),
@@ -167,6 +169,8 @@ class _HomeScreenState extends State<HomeScreen> {
                             "title": editTitleController.text,
                             "note": editNoteController.text,
                           });
+                          Toast.show("Added Successfully", context, duration: Toast.LENGTH_LONG, gravity:  Toast.BOTTOM,backgroundColor:Colors.green);
+
                           await refresh();
                         } else {
                           await DatabaseHelper.instance.update({
@@ -174,6 +178,8 @@ class _HomeScreenState extends State<HomeScreen> {
                             "title": editTitleController.text,
                             "note": editNoteController.text,
                           });
+                          Toast.show("Updated Successfully", context, duration: Toast.LENGTH_LONG, gravity:  Toast.BOTTOM,backgroundColor:Colors.green);
+
                           await refresh();
                         }
                         Navigator.of(context).pop();
